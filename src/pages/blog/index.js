@@ -1,19 +1,21 @@
+// Renamed from blog.js to index.js as it's in a the blog folder for the File System Route API
 import * as React from "react";
-import Layout from "../components/layout";
-import Seo from "../components/seo";
-import { graphql } from "gatsby";
+import Layout from "../../components/layout";
+import Seo from "../../components/seo";
+import { Link, graphql } from "gatsby";
 
 const BlogPage = ({ data }) => {
   const blogs = data.allMdx.nodes;
-  console.log(blogs);
+  // console.log(blogs);
 
   return (
     <Layout pageTitle={"My Blog Posts"}>
       {blogs.map((blog) => (
         <article key={blog.id}>
-          <h2>{blog.frontmatter.title}</h2>
+          <h2>
+            <Link to={`/blog/${blog.frontmatter.slug}`}>{blog.frontmatter.title}</Link>
+          </h2>
           <p>Posted: {blog.frontmatter.date}</p>
-          {blog.excerpt}
         </article>
       ))}
     </Layout>
@@ -28,6 +30,7 @@ export const query = graphql`
         frontmatter {
           date(formatString: "MMMM D, YYYY")
           title
+          slug
         }
         id
         excerpt
